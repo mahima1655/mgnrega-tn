@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../utils/LanguageContext';
 import { api } from '../services/api';
@@ -12,11 +12,7 @@ const Dashboard = () => {
   const [loading, setLoading] = useState(true);
   const { t, language, toggleLanguage, getDistrictName } = useLanguage();
 
-  useEffect(() => {
-    loadData();
-  }, [district]);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       const [districtResponse, stateResponse] = await Promise.all([
         api.getDistrictData(district),
@@ -30,7 +26,11 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [district]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const getPerformanceLevel = (value, avgValue) => {
     if (!avgValue) return 'average';
