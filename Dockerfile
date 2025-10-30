@@ -15,7 +15,8 @@ COPY . .
 
 # Build React app
 WORKDIR /app/client
-RUN npm run build
+RUN chmod +x node_modules/.bin/react-scripts
+RUN npx react-scripts build
 
 # Switch back to app directory
 WORKDIR /app
