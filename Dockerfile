@@ -1,25 +1,24 @@
-FROM node:18-alpine
+FROM node:18
 
 WORKDIR /app
 
-# Copy package files
-COPY package*.json ./
-COPY client/package*.json ./client/
+# Copy and install server dependencies
 COPY server/package*.json ./server/
-
-# Install dependencies
-RUN npm install
-RUN cd client && npm install
 RUN cd server && npm install
+
+# Copy and install client dependencies  
+COPY client/package*.json ./client/
+RUN cd client && npm install
 
 # Copy source code
 COPY . .
 
 # Build React app
-RUN cd client && npm run build
+WORKDIR /app/client
+RUN npm run build
 
-# Copy database
-RUN cp server/mgnrega.db server/mgnrega.db
+# Switch back to app directory
+WORKDIR /app
 
 EXPOSE 5000
 
