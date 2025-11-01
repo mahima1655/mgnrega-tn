@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '../utils/LanguageContext';
 import { api, detectLocation } from '../services/api';
+import VoiceGuide from './VoiceGuide';
+import IconBasedNavigation from './IconBasedNavigation';
 
 
 const HomePage = () => {
@@ -67,8 +69,15 @@ const HomePage = () => {
               <h1>{t('title')}</h1>
               <p>Government of Tamil Nadu</p>
             </div>
+            
+            <IconBasedNavigation 
+              onDistrictSelect={setSelectedDistrict}
+              districts={districts}
+            />
           </div>
         </div>
+        
+        <VoiceGuide />
         <div className="container">
           <div className="loading">{t('loading')}</div>
         </div>
